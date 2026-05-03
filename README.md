@@ -55,9 +55,7 @@
 
 <br/>
 
-[![PAI Overview Video](https://img.youtube.com/vi/Le0DLrn7ta0/maxresdefault.jpg)](https://youtu.be/Le0DLrn7ta0)
-
-**[Watch the full PAI walkthrough](https://youtu.be/Le0DLrn7ta0)** | **[Read: The Real Internet of Things](https://danielmiessler.com/blog/the-real-internet-of-things)**
+**[Watch the PAI walkthrough →](https://youtu.be/Le0DLrn7ta0)** · **[Read: The Real Internet of Things](https://danielmiessler.com/blog/the-real-internet-of-things)**
 
 ---
 
