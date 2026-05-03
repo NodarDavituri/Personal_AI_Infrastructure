@@ -34,7 +34,7 @@
 
 <!-- Content -->
 [![Get Started](https://img.shields.io/badge/🚀_Get_Started-Install-22C55E?style=flat)](#-installation)
-[![Release v5.0.0](https://img.shields.io/badge/📦_Release-v5.0.0-8B5CF6?style=flat)](Releases/v5.0.0/)
+[![Release v5.1.0](https://img.shields.io/badge/📦_Release-v5.1.0-8B5CF6?style=flat)](Releases/)
 [![Algorithm v6.3.0](https://img.shields.io/badge/Algorithm-v6.3.0-D97706?style=flat)](Releases/v5.0.0/.claude/PAI/ALGORITHM/v6.3.0.md)
 [![Pulse](https://img.shields.io/badge/Pulse-included-3B82F6?style=flat)](Releases/v5.0.0/.claude/PAI/PULSE/)
 [![Contributors](https://img.shields.io/github/contributors/danielmiessler/Personal_AI_Infrastructure?style=flat&logo=githubsponsors&logoColor=white&label=Contributors&color=EC4899)](https://github.com/danielmiessler/Personal_AI_Infrastructure/graphs/contributors)
@@ -64,13 +64,7 @@
 </div>
 
 > [!IMPORTANT]
-> **PAI v5.0.0 — Life Operating System** — the biggest release in PAI history. PAI is no longer "AI scaffolding" — it's a **Life Operating System** with the unified **Pulse** daemon (Life Dashboard at `localhost:31337`), a **DA** (Digital Assistant) identity layer, **Algorithm v6.3.0** (Current State → Ideal State, seven phases, classifier-driven mode + tier), the **ISA** primitive (universal "ideal state" articulation), 45 skills, 171 workflows, 37 hooks, and structural privacy via containment zones.
->
-> **[v5.0.0 release notes →](Releases/v5.0.0/README.md)** | **[All releases →](Releases/)**
->
-> **One-line install:** `curl -sSL https://ourpai.ai/install.sh | bash`
->
-> Upgrading from v4.x? This is a different system, not a patch. Read the [migration guide](Releases/v5.0.0/README.md#migration-guide-from-v4x) first.
+> **v5.1.0 — Life Operating System** (Linux compat + installer polish on the v5.0.0 base). Install: `curl -sSL https://ourpai.ai/install.sh | bash` · **[v5.0.0 release notes](Releases/v5.0.0/README.md)** · Upgrading from v4.x → read the [migration guide](Releases/v5.0.0/README.md#migration-guide-from-v4x) first (different system, not a patch).
 
 <div align="center">
 
@@ -80,13 +74,25 @@
 
 ## What PAI Is
 
-PAI is a Life Operating System. It captures who you are, what you care about, and where you're trying to go — and then helps you get there using AI that knows you. Three layers stack on top of each other:
+PAI started in June of 2025 to answer a single question:
 
-- **PAI** — the OS itself. Skills, memory, the Algorithm, your Telos, your identity files.
-- **Pulse** — the Life Dashboard at `localhost:31337`. Where you actually see your state, goals, and work.
-- **The DA** — your Digital Assistant. The voice and personality you talk to.
+> What are we building with all this AI?
 
-It's designed for individuals first, but the same architecture works for teams, companies, or any entity that wants to articulate what it's trying to be and move toward it.
+It's great that we have all these prompts, and models, and agents, and harnesses — but what are we actually *doing* with them?
+
+PAI is the answer to that question. It's an AI system built around people, designed to magnify human capabilities and help you pursue your **ideal state**. It still does all the regular things an AI harness does — code, build, research, automate — but it does them better because it deeply understands the larger picture of what you're trying to accomplish.
+
+**PAI is the Life Operating System.** Like a computer operating system, it manages the resources, processes, identity, memory, and interfaces that let a person live and work. The difference is that the resources it manages are *your life* — your goals, your relationships, your work, your health, your creative output, your time. PAI is not a chatbot. PAI is not a dashboard. PAI is not a passive "AI scaffolding framework." PAI is the OS underneath all of that.
+
+Three layers sit on top of each other, each with a distinct job:
+
+![The Three Layers — PAI is the OS, Pulse is the Dashboard, the DA is the Interface](./images/diagrams/02-three-layer-stack.jpg)
+
+- **PAI** — the **Life Operating System** itself. Skills, memory, hooks, the Algorithm, your Telos, your identity files. Everything the DA runs on top of.
+- **Pulse** — the **Life Dashboard** at `localhost:31337`. The visible surface onto the OS, where you (and the DA, and every background worker) see current state vs. ideal state, goals, workflows, observability.
+- **The DA** — your **Digital Assistant**. The voice and personality you actually talk to. Everyone running PAI names their own DA.
+
+PAI targets **AS3** on the [PAI Maturity Model](https://danielmiessler.com/blog/personal-ai-maturity-model), with lineage from [The Real Internet of Things](https://danielmiessler.com/blog/the-real-internet-of-things) (2016).
 
 ---
 
@@ -94,70 +100,74 @@ It's designed for individuals first, but the same architecture works for teams, 
 
 ### Humans first, tech second
 
-PAI puts the human at the center, not the tooling. The tech exists to improve people's lives, not the other way around. Every design decision starts from one question: what does this do for the person running it?
+PAI puts the human at the center, not the tooling. Tech is here to improve the lives of people, not the other way around. Every design decision starts from one question: what does this do for the person running it?
 
 ### A Life OS, not an agent harness
 
-PAI captures what you care about — goals, work, relationships, health, finances — and helps you pursue your ideal state across all of it. It writes code and runs agents and does the things people associate with AI tooling, but those are capabilities in service of the larger goal. The point is your life, not the tools.
+PAI builds a personal Life OS using **TELOS** — your mission, goals, beliefs, wisdom, strategies, narratives, challenges, and mental models — to help you capture, articulate, and pursue your life and work goals. PAI absolutely *can* still build, code, and run agents, but those capabilities exist in service of the larger goal: helping you pursue your ideal state across your entire life and work, not just the next coding task.
 
 ### Ideal State drives everything
 
-The biggest unsolved problem with AI is that nobody can define what "good" or "done" actually means for a given task. PAI is built around the concept of Ideal State — specifically the transition from your current state to your ideal state — and it's woven through every layer.
+The biggest unsolved problem with AI is the inability to define what "good" or "done" actually looks like. PAI is built around **Ideal State** — specifically the transition between your current state and your ideal state — and that concept is woven through every layer.
 
-The primary expression is the **ISA** (Ideal State Artifact). An ISA is similar to a software PRD: it captures what done looks like so you can build toward it. The difference is that an ISA is general — it works for any creative task, from design to art to philosophy to engineering to strategy. The system decomposes the ideal state into discrete **ISCs** (Ideal State Criteria), which populate the document and double as verification items. That's how PAI hill-climbs toward ideal state on any kind of work.
+![Current State to Ideal State — Every PAI task is a hill-climb, with the ISA articulating done and ISCs as binary tool probes](./images/diagrams/01-current-to-ideal-loop.jpg)
+
+The primary expression is the **ISA** (Ideal State Artifact). An ISA is similar to a software PRD — it captures what done looks like so you can work toward it. The difference is that an ISA is *general* — it works for any creative task, from design to art to philosophy to engineering to strategy. The system creates discrete **ISCs** (Ideal State Criteria) that make up the body of the ISA document and *also* serve as the verification items. That's how PAI hill-climbs toward ideal state on any kind of work.
 
 ### A single Digital Assistant will be everyone's interface to AI
 
-I wrote about this in 2016 in [The Real Internet of Things](https://danielmiessler.com/blog/the-real-internet-of-things), and I'm more convinced now than I was then. The trajectory is clear: chatbots → agents → assistants. We're all building the same thing, and the endpoint is one DA per person.
+The trajectory is clear: chatbots → agents → assistants. We're all building the same thing, and the endpoint is one DA per person. I wrote about this in 2016 in [**The Real Internet of Things**](https://danielmiessler.com/blog/the-real-internet-of-things) (TRIOT), and I'm more convinced now than I was then.
 
 TRIOT had four core ideas that PAI is built on:
 
 - **Digital Assistants** — one DA per person, your primary interface to all AI
 - **Everything gets an API** — every product, service, person, and place becomes addressable
-- **Your DA dynamically creates your interfaces** — no more apps and dashboards; the DA assembles whatever you need in the moment
+- **Your DA dynamically creates your interfaces** — no more static apps and dashboards; the DA assembles whatever you need in the moment
 - **You define your ideal state, AI helps you get there** — the whole system points at your Telos
 
-This is what PAI is reaching for.
+PAI is the infrastructure that makes that future buildable.
 
 ---
 
 ## Features
 
-### Text over opaque storage
+### Heavy bias toward text
 
-Heavy bias toward plain text and Markdown. PAI avoids SQLite, Postgres, and other opaque stores wherever possible. Everything should be transparent and parsable — by you, by your DA, by `rg`, by anything else. If you can't read it with `cat`, we don't want it.
+PAI tries to avoid opaque storage structures wherever possible — SQLite, Postgres, embedding stores — because we want everything to be as transparent and parsable as possible. Plain text and Markdown by default. Your filesystem is the index. If `cat`, `rg`, and your eyes can't read it, PAI doesn't want it.
 
-### Context scaffolding > model
+### Context Scaffolding > Model
 
-The mistake most people make with AI is failing to feed it the big picture. PAI is fundamentally a system for handing the smartest models the right context — about you, about what you're trying to accomplish, about the tools they have — so they can actually help you reach your ideal state. The model matters less than what surrounds it.
+The mistake most people make with AI is not properly feeding it the big picture via context engineering. PAI is fundamentally a system for providing the smartest models with the right context — about you, about what you're trying to accomplish — along with the best possible tooling, so they can actually help you move toward ideal state. The model matters less than what surrounds it.
 
 ### Bitter-pilled engineering
 
-The flip side of context scaffolding: as models get stronger, they need fewer instructions on how to do the work. We constantly audit PAI to remove overly prescriptive direction in places where the model can do better with just the right context and tools. The system gets smaller as the models get bigger.
+Although we believe strongly in the context scaffold (above), we believe equally strongly that as models get stronger, we will have to give them *fewer* instructions on how to specifically accomplish tasks. PAI is constantly adjusted to remove overly prescriptive direction wherever the model can do better given the right context and tools. The system gets smaller as the models get bigger.
 
-### Filesystem as context, no RAG
+### Filesystem as context (no RAG)
 
-PAI has avoided RAG since June 2025. Rich text with cross-references, plus fast search like ripgrep, gives us everything people normally want from RAG — without the embedding complexity, the retrieval flakiness, or the loss of fidelity. Your filesystem is the index.
+PAI has avoided RAG since its start in June 2025. Rich text content with cross-references, combined with fast search like ripgrep, gives us everything people usually want from a RAG system — without the complexity, embedding cost, and loss-related issues from retrieval mechanisms.
 
-### Memory that compounds
+### A powerful MEMORY system
 
-A text-based memory system that captures what you've done, what you've learned, and what's worth keeping — and feeds it back as input to future work. Three tiers (WORK, KNOWLEDGE, LEARNING) plus a typed graph across people, companies, ideas, and research.
+A text-based memory system built around the same architecture, designed to constantly gather signal on what we've done, learned, and need next. Three tiers (WORK / KNOWLEDGE / LEARNING) plus a typed graph across People, Companies, Ideas, and Research.
 
 ### Self-improvement loop
 
-PAI captures signals about what went well and what didn't — explicit ratings, sentiment, verification outcomes, satisfaction — and uses them to improve itself. The system that runs the work is also the system that gets better at running it.
+PAI continuously captures what goes well and poorly during execution — explicit ratings, sentiment, verification outcomes, satisfaction signals — and feeds them back as input to improve PAI itself. The system that runs the work is also the system that gets better at running it.
 
 ### The Algorithm
 
-A custom algorithm that drives the current → ideal state transition through a seven-phase loop modeled on the scientific method, using Deutsch's framing of hard-to-vary explanations as the standard for "good." It's the gravitational center of PAI — every non-trivial task runs through it.
+A custom Algorithm system that moves through the current → ideal state transition using an analog of the scientific method and Deutsch's framing of hard-to-vary explanations as the standard for "good." Seven phases: OBSERVE → THINK → PLAN → BUILD → EXECUTE → VERIFY → LEARN. Every non-trivial task runs through it. It is the gravitational center of PAI.
 
-### Skills as deterministic units
+![The Algorithm — Seven phases that close the gap from Current State to Ideal State](./images/diagrams/03-algorithm-seven-phases.jpg)
 
-A skill system biased toward deterministic code execution. The hierarchy is: code → CLI to run the code → workflows that prompt the CLI → a SKILL.md that routes between workflows. The skill is the container; SKILL.md is the front door; the actual work is real code wherever possible. Prompts wrap code; code doesn't wrap prompts.
+### A custom Skill system
 
-### Thinking skills
+A skill system with a strong bias toward deterministic code execution. The structure goes: **code → CLI to execute that code → workflows (prompts that drive the CLI) → SKILL.md (the routing table of workflows)**. The skill is the container for the overall function; SKILL.md explains what the skill does and how to invoke its workflows. Each skill is ultimately calling code via a CLI. Prompts wrap code; code does not wrap prompts.
 
-A meaningful library of custom thinking skills — first principles, council debates, red team, root cause, systems thinking, iterative depth, aperture oscillation, and more — that the Algorithm pulls from to raise the quality of decisions across the system.
+### A library of custom thinking skills
+
+A considerable number of custom thinking skills — FirstPrinciples, Council, RedTeam, RootCauseAnalysis, SystemsThinking, IterativeDepth, ApertureOscillation, BeCreative, Ideate, Science, and more — that the Algorithm pulls from to raise the quality of decisions made across the entire system.
 
 ---
 
@@ -213,30 +223,15 @@ This is the most important step. **Without TELOS, your DA has nothing to optimiz
 
 ### Upgrading from v4.x
 
-> [!IMPORTANT]
-> v5.0.0 is a different system, not a patch. Read the **[full migration guide](Releases/v5.0.0/README.md#migration-guide-from-v4x)** before installing.
-
-Quick path:
+v5.0.0 is a different system, not a patch — read the **[full migration guide](Releases/v5.0.0/README.md#migration-guide-from-v4x)** first.
 
 ```bash
-# 1. Back up your existing installation
-cp -R ~/.claude ~/.claude.backup-$(date +%Y%m%d)
-
-# 2. Install v5.0.0 (one-liner above) or via manual clone
-curl -sSL https://ourpai.ai/install.sh | bash
-
-# 3. Open the Life Dashboard and run the interview
-open http://localhost:31337
+cp -R ~/.claude ~/.claude.backup-$(date +%Y%m%d)   # back up
+curl -sSL https://ourpai.ai/install.sh | bash      # install v5
+open http://localhost:31337                        # open Life Dashboard
 ```
 
-If you had personal content in v4.x (notes, project state, custom rules), tell your DA: *"Help me migrate my old content into the PAI/USER/ structure."* The **Migrate** skill intakes from `.md`/`.markdown`/`.txt`, Obsidian, Notion, Apple Notes — classifies each chunk against the v5 taxonomy (TELOS, KNOWLEDGE, PROJECTS, FEED, etc.) and commits with provenance.
-
-**Post-upgrade checklist:**
-- [ ] Pulse is alive: `curl -s http://localhost:31337/api/pulse/health | jq`
-- [ ] Voice announces: `curl -s -X POST http://localhost:31337/notify -H "Content-Type: application/json" -d '{"message": "Hello from your DA"}'`
-- [ ] Dashboard renders: `open http://localhost:31337`
-- [ ] DA identity populated in `PAI/USER/DA_IDENTITY.md`
-- [ ] TELOS captured under `PAI/USER/TELOS/`
+For old personal content, tell your DA: *"Help me migrate my old content into PAI/USER/."* The **Migrate** skill handles `.md`, Obsidian, Notion, and Apple Notes — classifies into the v5 taxonomy and commits with provenance.
 
 ---
 
@@ -386,15 +381,17 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 <br/>
 
+**v5.1.0 (2026-05-03) — Linux Compat + Installer Polish**
+Cross-platform parity and one-line-install reliability on the v5.0.0 base.
+- **Linux compat** — integrates m8ryx PRs #1148–1152 into Pulse and the installer
+- **Installer fixes** — dev TTY redirect so the `pai` handoff works under `curl … | bash`; wizard auto-quits and auto-runs `pai` post-install; voice.ts route registration so `/notify` works on first boot
+- **Bundled build artifacts** — Pulse dashboard build, MenuBar icons, lockfile, installer-wizard image assets, and the `PAI-Install/` directory all included in the published release
+- **README reframe** — DA-at-center thesis, full 45-skill catalog with use cases, "One-Line Install" heading, three new hand-drawn black-background architect diagrams (Current → Ideal Loop · Three-Layer Stack · Algorithm Seven Phases)
+- **Cleanup** — deprecated root `.claude/` directory removed; v5.0.0 release-area trimmed
+- [Base release notes + migration guide](Releases/v5.0.0/README.md)
+
 **v5.0.0 (2026-04-30) — Life Operating System**
-- **Pulse** — unified daemon (port 31337): voice, hooks, observability, cron, Life Dashboard (22 routes), wiki API, optional Telegram/iMessage bridges. Replaces every previous loose service.
-- **The DA** — Digital Assistant identity layer. PRINCIPAL_IDENTITY + DA_IDENTITY pair, loaded at session start. `/interview` walks you through naming your DA, picking a voice, capturing TELOS.
-- **Algorithm v6.3.0** — seven-phase loop (OBSERVE → THINK → PLAN → BUILD → EXECUTE → VERIFY → LEARN). Sonnet-backed mode classifier picks MINIMAL/NATIVE/ALGORITHM and tier (E1–E5) per prompt. Closed-list thinking capabilities. Voice phase announcements. Verification doctrine (live-probe, advisor calls at commitment boundaries, cross-vendor audit at E4/E5).
-- **The ISA** — Ideal State Artifact primitive. One document, twelve sections (Problem → Vision → Out of Scope → Principles → Constraints → Goal → Criteria → Test Strategy → Features → Decisions → Changelog → Verification), five identities (articulation, test harness, build verification, done condition, system of record). Owned by the **ISA skill** (Scaffold, Interview, CheckCompleteness, Reconcile, Seed, Append) with a dozen reference examples spanning E1–E5.
-- **Containment + release tooling** — privacy is structural. `containment-zones.ts` declares every directory's privacy zone; `ContainmentGuard` PreToolUse hook blocks cross-zone leaks; 12 security gates run on every public release; two-stage release (stage → publish) never auto-chains.
-- **Memory v7.6** — structured by purpose: WORK (active task ISAs), KNOWLEDGE (typed graph: People, Companies, Ideas, Research, Blogs), LEARNING (meta-patterns), RELATIONSHIP (DA-Principal notes), OBSERVABILITY (every tool call + hook firing + satisfaction signal), STATE (session registry).
-- **45 public skills, 171 workflows, 37 hooks** — skills are self-activating composable domain units; hooks fire across SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop, SubagentStop, PreCompact, SessionEnd.
-- **One-line installer** — `curl -sSL https://ourpai.ai/install.sh | bash`. Auto-backs-up existing `~/.claude/`, runs the DA identity wizard, registers Pulse as a launchd service, validates.
+First release as a Life OS rather than AI scaffolding. Adds the Pulse daemon (port 31337) with the Life Dashboard, the DA identity layer, Algorithm v6.3.0 (seven-phase Current → Ideal loop), the ISA primitive, containment-based privacy, and the one-line installer. 45 skills · 171 workflows · 37 hooks · Memory v7.6.
 - [Full release notes + migration guide](Releases/v5.0.0/README.md)
 
 **v4.0.3 (2026-03-01) — Community PR Patch**
