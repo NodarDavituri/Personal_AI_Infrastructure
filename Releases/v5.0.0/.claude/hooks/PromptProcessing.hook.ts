@@ -941,7 +941,7 @@ async function main() {
         systemPrompt: buildContextPrompt(isFirstPrompt),
         userPrompt,
         expectJson: true,
-        timeout: 25000,
+        timeout: 40000,
         level: 'standard',
       });
 
