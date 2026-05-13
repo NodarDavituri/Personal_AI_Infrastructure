@@ -191,6 +191,18 @@ function classifyCallSite(file: string, reason: string): { classification: "bypa
   if (file.endsWith(".md")) {
     return { classification: "legit", note: "markdown (docs/template) — no runtime billing risk" };
   }
+  // Dependency manifests and lockfiles never execute — just declare deps
+  const base = file.split("/").pop() ?? "";
+  if (
+    base === "package.json" ||
+    base === "package-lock.json" ||
+    base === "bun.lock" ||
+    base === "bun.lockb" ||
+    base === "yarn.lock" ||
+    base === "pnpm-lock.yaml"
+  ) {
+    return { classification: "legit", note: "dependency manifest / lockfile — no runtime billing risk" };
+  }
   for (const [hint, note] of Object.entries(LEGIT_HINTS)) {
     if (file.includes(hint)) return { classification: "legit", note };
   }
@@ -222,6 +234,11 @@ function scanCallSites(): CallSite[] {
           const match = line.match(/^([^:]+):(\d+):(.*)$/);
           if (!match) continue;
           const [, file, lineNumStr, matched] = match;
+          // Defense-in-depth: rg `-g '!X/**'` exclusion silently leaks node_modules
+          // when combined with file-style globs. Drop any hit whose path contains a
+          // SCAN_EXCLUDES element as a `/segment/` part, regardless of rg behavior.
+          const fileNorm = `/${file}/`;
+          if (SCAN_EXCLUDES.some((ex) => fileNorm.includes(`/${ex}/`))) continue;
           const lineNum = parseInt(lineNumStr, 10);
           const { classification, note } = classifyCallSite(file, reason);
           hits.push({
