@@ -7,6 +7,9 @@ chrome/
 node_modules/
 **/node_modules/
 
+# PAI runtime artifacts (combined-system-prompt regenerated per launch)
+PAI/.runtime/
+
 # Session/runtime state
 debug/
 todos/

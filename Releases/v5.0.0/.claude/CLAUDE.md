@@ -3,11 +3,15 @@
 > **PAI is the Life OS. {DA_IDENTITY.NAME} is {PRINCIPAL.NAME}'s DA. Pulse is the Life Dashboard.**
 > Canonical thesis: `PAI/DOCUMENTATION/LifeOs/LifeOsThesis.md`. Everyone running PAI names their own DA; {DA_IDENTITY.NAME} is {PRINCIPAL.NAME}'s specific instantiation. PAI targets AS3 on the [PAI Maturity Model](https://your-domain.example.com/blog/personal-ai-maturity-model), with lineage from [The Real Internet of Things](https://your-domain.example.com/blog/the-real-internet-of-things) (2016).
 
-@PAI/USER/PRINCIPAL_IDENTITY.md
-@PAI/USER/DA_IDENTITY.md
-@PAI/USER/PROJECTS/PROJECTS.md
-@PAI/USER/TELOS/PRINCIPAL_TELOS.md
-@PAI/DOCUMENTATION/ARCHITECTURE_SUMMARY.md
+<!-- PAI identity (PRINCIPAL_IDENTITY, DA_IDENTITY, PROJECTS, PRINCIPAL_TELOS,
+     ARCHITECTURE_SUMMARY) is loaded via PAI/TOOLS/ResolveBootContext.ts and
+     injected through `claude --append-system-prompt-file` by pai.ts cmdLaunch().
+     It used to live here as `@`-imports, but Claude Code 2.1.x reads CLAUDE.md
+     regardless of CLAUDE_CONFIG_DIR, which made cc trip the external-imports
+     trust prompt for every new project. Moving identity into pai.ts's launch
+     path keeps it PAI-scoped — cc doesn't pass --append-system-prompt-file, so
+     cc starts clean. -->
+
 
 # MODES
 

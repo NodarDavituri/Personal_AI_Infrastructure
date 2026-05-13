@@ -396,11 +396,25 @@ async function cmdLaunch(options: { mcp?: string; resume?: boolean; skipPerms?: 
   displayBanner();
   const args = ["claude"];
 
-  // PAI System Prompt — constitutional rules appended to Claude Code's system prompt
-  // These rules get highest instruction authority (system prompt layer > CLAUDE.md layer)
+  // PAI System Prompt + Boot Context — both appended to Claude Code's system prompt.
+  //
+  // Constitutional rules (PAI_SYSTEM_PROMPT.md) used to ship alone via this flag.
+  // Identity context (PRINCIPAL_IDENTITY, DA_IDENTITY, PROJECTS, PRINCIPAL_TELOS,
+  // ARCHITECTURE_SUMMARY) used to ship via `@`-imports inside ~/.claude/CLAUDE.md —
+  // but Claude Code 2.1.x reads CLAUDE.md regardless of CLAUDE_CONFIG_DIR, which
+  // tripped cc's external-imports trust prompt. The fix: move identity into a
+  // resolved inline file (PAI_BOOT_CONTEXT.md) and concatenate both into a
+  // session-scoped combined prompt that we pass to --append-system-prompt-file.
+  // cc doesn't pass this flag, so cc starts clean without PAI identity.
   const systemPromptFile = options.systemPrompt ?? join(CLAUDE_DIR, "PAI", "PAI_SYSTEM_PROMPT.md");
   if (existsSync(systemPromptFile)) {
-    args.push("--append-system-prompt-file", systemPromptFile);
+    const { resolveBootContext } = await import("./ResolveBootContext");
+    const systemPromptContent = readFileSync(systemPromptFile, "utf-8");
+    const bootContext = resolveBootContext();
+    const combined = `${systemPromptContent.trimEnd()}\n\n---\n\n${bootContext}`;
+    const combinedPath = join(CLAUDE_DIR, "PAI", ".runtime", "combined-system-prompt.md");
+    writeFileSync(combinedPath, combined);
+    args.push("--append-system-prompt-file", combinedPath);
   }
 
   // Handle MCP configuration
