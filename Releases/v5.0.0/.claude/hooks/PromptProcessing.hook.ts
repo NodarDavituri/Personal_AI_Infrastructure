@@ -924,11 +924,16 @@ async function main() {
     console.error('[PromptProcessing] Running inference (tab title' + (isFirstPrompt ? ' + session name)...' : ')...'));
 
     const cleanPrompt = prompt.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 1000);
+    // Wrap leading-`/` so `claude --print` doesn't read it as a CLI slash-command
+    // (which would return "Unknown command: /X" and fail JSON parse → E3 fail-safe).
+    const safePrompt = cleanPrompt.startsWith('/')
+      ? `User invoked: ${cleanPrompt}`
+      : cleanPrompt;
     // Naming is permanent and first-prompt-only; exclude Assistant turns so Algorithm scaffolding
     // (phase headers, agent names, SUMMARY lines) cannot contaminate the session name. Tab-title
     // inference on later prompts keeps Assistant context for "continue with X" style follow-ups.
     const context = getRecentContext(data.transcript_path, 6, !isFirstPrompt);
-    const userPrompt = context ? `CONTEXT:\n${context}\n\nCURRENT MESSAGE:\n${cleanPrompt}` : cleanPrompt;
+    const userPrompt = context ? `CONTEXT:\n${context}\n\nCURRENT MESSAGE:\n${safePrompt}` : safePrompt;
 
     const inferenceStart = Date.now();
     try {
