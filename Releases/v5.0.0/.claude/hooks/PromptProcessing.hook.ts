@@ -54,11 +54,12 @@ interface InferenceResult {
 }
 
 type Mode = 'MINIMAL' | 'NATIVE' | 'ALGORITHM';
+type Source = 'classifier' | 'fail-safe' | 'fast-path';
 
-function emitAdditionalContext(mode: Mode, tier: number | null, reason: string): void {
+function emitAdditionalContext(mode: Mode, tier: number | null, reason: string, source: Source = 'classifier'): void {
   const additionalContext = (mode === 'ALGORITHM' && tier !== null)
-    ? `MODE: ALGORITHM | TIER: E${tier} | REASON: ${reason} | SOURCE: classifier`
-    : `MODE: ${mode} | REASON: ${reason} | SOURCE: classifier`;
+    ? `MODE: ALGORITHM | TIER: E${tier} | REASON: ${reason} | SOURCE: ${source}`
+    : `MODE: ${mode} | REASON: ${reason} | SOURCE: ${source}`;
   console.log(JSON.stringify({
     hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext },
   }));
@@ -871,7 +872,7 @@ async function main() {
     // ── FAST PATH: Ratings and praise — skip inference, emit MINIMAL ──
     if (isExplicitRating(prompt)) {
       console.error('[PromptProcessing] Explicit rating — skipping inference, mode MINIMAL');
-      emitAdditionalContext('MINIMAL', null, 'explicit rating');
+      emitAdditionalContext('MINIMAL', null, 'explicit rating', 'fast-path');
       appendPromptProcessingTelemetry({
         timestamp: new Date().toISOString(), session_id: sessionId,
         prompt_excerpt: prompt.slice(0, 120), mode: 'MINIMAL', tier: null,
@@ -886,7 +887,7 @@ async function main() {
       if (POSITIVE_PRAISE_WORDS.has(normalizedPrompt) || POSITIVE_PHRASES.has(normalizedPrompt)
           || (promptWords.length === 2 && promptWords.every(w => POSITIVE_PRAISE_WORDS.has(w)))) {
         console.error('[PromptProcessing] Positive praise — skipping inference, mode MINIMAL');
-        emitAdditionalContext('MINIMAL', null, 'positive praise / acknowledgment');
+        emitAdditionalContext('MINIMAL', null, 'positive praise / acknowledgment', 'fast-path');
         appendPromptProcessingTelemetry({
           timestamp: new Date().toISOString(), session_id: sessionId,
           prompt_excerpt: prompt.slice(0, 120), mode: 'MINIMAL', tier: null,
@@ -904,7 +905,7 @@ async function main() {
 
     if (prompt.length < MIN_PROMPT_LENGTH) {
       console.error('[PromptProcessing] Prompt too short, skipping inference, mode MINIMAL');
-      emitAdditionalContext('MINIMAL', null, 'prompt too short for classification');
+      emitAdditionalContext('MINIMAL', null, 'prompt too short for classification', 'fast-path');
       appendPromptProcessingTelemetry({
         timestamp: new Date().toISOString(), session_id: sessionId,
         prompt_excerpt: prompt.slice(0, 120), mode: 'MINIMAL', tier: null,
@@ -1037,7 +1038,7 @@ async function main() {
         }
         const fallbackTitle = deterministicTitle && isValidWorkingTitle(deterministicTitle) ? deterministicTitle : getWorkingFallback();
         setTabState({ title: `⚙️ ${prefix}${fallbackTitle}`, state: 'working', sessionId });
-        emitAdditionalContext('ALGORITHM', 3, `inference failed: ${result.error ?? 'unknown'}`);
+        emitAdditionalContext('ALGORITHM', 3, `inference failed: ${result.error ?? 'unknown'}`, 'fail-safe');
         appendPromptProcessingTelemetry({
           timestamp: new Date().toISOString(),
           session_id: sessionId,
@@ -1057,7 +1058,7 @@ async function main() {
       }
       const fallbackTitle = deterministicTitle && isValidWorkingTitle(deterministicTitle) ? deterministicTitle : getWorkingFallback();
       setTabState({ title: `⚙️ ${prefix}${fallbackTitle}`, state: 'working', sessionId });
-      emitAdditionalContext('ALGORITHM', 3, `inference error: ${String(err).slice(0, 80)}`);
+      emitAdditionalContext('ALGORITHM', 3, `inference error: ${String(err).slice(0, 80)}`, 'fail-safe');
       appendPromptProcessingTelemetry({
         timestamp: new Date().toISOString(),
         session_id: sessionId,
